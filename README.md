@@ -1,5 +1,12 @@
 # A Simple Terminal Music Player For Focus
 
+## Dependencies:
+
+1. brew install mpv
+2. brew install ffmpeg
+3. brew install jq
+4. brew install socat
+
 ## How to use:
 
 - clone this repo
