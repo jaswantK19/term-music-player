@@ -22,6 +22,21 @@ BLUE_COLOR="\033[1;34m"
 # Array of colors for equalizer bars
 EQUALIZER_COLORS=("$GREEN_COLOR" "$YELLOW_COLOR" "$CYAN_COLOR" "$RED_COLOR" "$MAGENTA_COLOR" "$BLUE_COLOR")
 
+# Function to handle script interruption and cleanup
+function cleanup {
+  echo -e "\n${RED_COLOR}Stopping playback...${RESET_COLOR}"
+  if [[ -n $mpv_pid ]]; then
+    kill $mpv_pid 2>/dev/null
+    wait $mpv_pid 2>/dev/null
+  fi
+  rm -f /tmp/mpvsocket
+  pkill -f "mpv --no-video"  # Ensure any lingering mpv processes are terminated
+  exit 0
+}
+
+# Trap SIGINT (Ctrl+C) and SIGTERM to ensure cleanup
+trap cleanup SIGINT SIGTERM
+
 # Function to display a dashed progress bar and colorful equalizer
 function show_progress_and_equalizer {
   local duration=$1
@@ -89,4 +104,7 @@ find "$MUSIC_DIR" -type f \( -iname "*.mp3" -or -iname "*.wav" -or -iname "*.fla
     echo -e "${RED_COLOR}Error: Could not determine the duration of the track.${RESET_COLOR}"
   fi
 done
+
+# Cleanup on normal exit
+cleanup
 
