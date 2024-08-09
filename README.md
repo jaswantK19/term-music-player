@@ -1,5 +1,7 @@
 # A Simple Terminal Music Player For Focus
 
+![Demo Image](demo.png)
+
 ## Dependencies:
 
 1. brew install mpv
